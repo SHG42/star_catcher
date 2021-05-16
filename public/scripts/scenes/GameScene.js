@@ -55,6 +55,14 @@ export default class GameScene extends Phaser.Scene {
     update() {
         //call cursor key checks from player class, pass cursor keys to player class update
         this.dude.update(this.cursors);
+
+        //restart lvl if dude falls off map
+        if (this.dude.body.position.y > this.map.heightInPixels) {
+            this.cameras.main.fade(400, 0, 0, 0);
+            this.cameras.main.on('camerafadeoutcomplete', ()=>{
+                this.scene.restart({level: this._LEVEL, levels: this._LEVELS, newGame: false});
+            });
+        }
     }
 
     createMap() {
@@ -65,20 +73,15 @@ export default class GameScene extends Phaser.Scene {
         //tell tilemap to use tilesheet
         this.tiles = this.map.addTilesetImage("area01_level_tiles");
         //create layers
-        this.backgroundLayer = this.map.createStaticLayer("background", this.tiles, 0,0);
+        this.backgroundLayer = this.map.createLayer("background", this.tiles, 0,0);
 
-        this.platformLayer = this.map.createStaticLayer("foreground", this.tiles, 0,0);
+        this.platformLayer = this.map.createLayer("foreground", this.tiles, 0,0);
 
-        //render front layer on lvl1:
-        if (this._LEVEL === 1) {
-            this.frontLayer = this.map.createStaticLayer("front", this.tiles, 0,0);
-            this.frontLayer.setDepth(1);
-        }
+        this.frontLayer = this.map.createLayer("front", this.tiles, 0,0);
+        this.frontLayer.setDepth(1);
         
         //set which tiles on blocked layer collide
         this.platformLayer.setCollisionByExclusion(-1);
-        //set world bounds on map
-		this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     }
 
     createAnims() {
@@ -140,8 +143,6 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.physics.add.overlap(this.dude, this.stars, this.getStars, null, this);
-        //this.physics.add.overlap(this.dude, this.stars, this.getStars.bind(this, false));
-        //console.log(this.stars.children);
     }
 
     createPortal() {
@@ -189,7 +190,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.startFollow(this.dude);
 
         //add player-platform collisions
-		this.dude.setCollideWorldBounds(true);
+		// this.dude.setCollideWorldBounds(true);
         this.physics.add.collider(this.dude, this.platformLayer);
         
         this.physics.add.overlap(this.dude, this.portal, this.loadNextLevel.bind(this, false)); //binding context AND a value of false for the newGame parameter, so Phaser knows we're moving to next level and NOT ending or restarting game
@@ -199,7 +200,6 @@ export default class GameScene extends Phaser.Scene {
 
     getStars(dude, star) {
         star.disableBody(true, true);
-        console.log("got a star");
         this.events.emit("getStar");
     }
 

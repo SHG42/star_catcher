@@ -28,14 +28,15 @@ export default class TitleScene extends Phaser.Scene {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
         this.titleLogo = this.add.image(width/2, height/2 -100, 'logo');
-        this.titleLogo.displayWidth = width/1.5;
-        this.titleLogo.displayHeight = height/1.5;
+        this.titleLogo.setScale(0.5);
         this.titleLogo.setPosition(width/2, height/2);
 
         this.time.addEvent({
             delay: 2000,
             callback: () => {
                 this.titleLogo.setTexture('instructions');
+                this.titleLogo.displayWidth = width-100;
+                this.titleLogo.displayHeight = height-100;
                 this.createPlayButton();
             },
             callbackScope: this
@@ -45,10 +46,10 @@ export default class TitleScene extends Phaser.Scene {
     createPlayButton() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
+       
         this.playButton = this.add.image(width/2, height/2 -100, 'go');
-        this.playButton.displayWidth = width/1.5;
-        this.playButton.displayHeight = height/1.5;
-        this.playButton.setPosition(width/2, height/2);
+        this.playButton.setScale(0.5);
+        this.playButton.setPosition(width/2, height/2.5);
         this.playButton.setInteractive();
 
         this.playButton.on('pointerdown', function(pointer) {

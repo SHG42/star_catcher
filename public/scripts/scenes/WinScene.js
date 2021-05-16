@@ -25,7 +25,7 @@ export default class WinScene extends Phaser.Scene {
         this.winScreen.displayHeight = height/1.5;
         this.winScreen.setPosition(width/2, height/2);
 
-        this.restartButton = this.add.image(width/2, height/2 -100, 'go');
+        this.restartButton = this.add.image(width/2, height/2 -100, 'restart');
         this.restartButton.displayWidth = width/1.5;
         this.restartButton.displayHeight = height/1.5;
         this.restartButton.setPosition(width/2, height/2);
