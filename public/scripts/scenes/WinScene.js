@@ -20,12 +20,18 @@ export default class WinScene extends Phaser.Scene {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
 
-        this.winScreen = this.add.image(width/2, height/2 -100, 'win');
+        if(width > height) {//landscape
+            this.winScreen = this.add.image(width/2, height/2 -100, 'win');
+            this.restartButton = this.add.image(width/2, height/2 -100, 'restart');
+        } else if (height > width) {//portrait
+            this.winScreen = this.add.image(width/2, height/2 -100, 'win_vertical');
+            this.restartButton = this.add.image(width/2, height/2 -100, 'restart_vertical');
+        }
         this.winScreen.displayWidth = width/1.5;
         this.winScreen.displayHeight = height/1.5;
         this.winScreen.setPosition(width/2, height/2);
 
-        this.restartButton = this.add.image(width/2, height/2 -100, 'restart');
+        
         this.restartButton.displayWidth = width/1.5;
         this.restartButton.displayHeight = height/1.5;
         this.restartButton.setPosition(width/2, height/2);

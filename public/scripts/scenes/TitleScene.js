@@ -4,12 +4,10 @@ export default class TitleScene extends Phaser.Scene {
     }
 
     init(data) {
-        console.log(data);
         //store data in properties:
         this._LEVEL = data.level;
         this._LEVELS = data.levels;
         this._NEWGAME = data.newGame;
-        //console.log(this._LEVELS);
         this.loadingLevel = false;
         //emit event to reset health if game over occurs and new game starts, check to see if new game
         if(this._NEWGAME) {
@@ -27,14 +25,26 @@ export default class TitleScene extends Phaser.Scene {
     createTitle() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-        this.titleLogo = this.add.image(width/2, height/2 -100, 'logo');
+
+        if(width > height) {//landscape
+            this.titleLogo = this.add.image(width/2, height/2, 'logo');
+        } else if (height > width) {//portrait
+            this.titleLogo = this.add.image(width/2, height/2, 'logo_vertical');
+        }
+
         this.titleLogo.setScale(0.5);
-        this.titleLogo.setPosition(width/2, height/2);
+        this.titleLogo.displayWidth = width-100;
+        this.titleLogo.displayHeight = height-100;
 
         this.time.addEvent({
             delay: 2000,
             callback: () => {
-                this.titleLogo.setTexture('instructions');
+                if(width > height) {//landscape
+                    this.titleLogo.setTexture('instructions');
+                } else if (height > width) {//portrait
+                    this.titleLogo.setTexture('instructions_vertical');
+                }
+                
                 this.titleLogo.displayWidth = width-100;
                 this.titleLogo.displayHeight = height-100;
                 this.createPlayButton();
@@ -46,10 +56,16 @@ export default class TitleScene extends Phaser.Scene {
     createPlayButton() {
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
-       
-        this.playButton = this.add.image(width/2, height/2 -100, 'go');
+
+        if(width > height) {//landscape
+            this.playButton = this.add.image(width/2, height/2, 'go');
+        } else if (height > width) {//portrait
+            this.playButton = this.add.image(width/2, height/2, 'go_vertical');
+        }
+
         this.playButton.setScale(0.5);
-        this.playButton.setPosition(width/2, height/2.5);
+        this.playButton.displayWidth = width-100;
+        this.playButton.displayHeight = height-100;
         this.playButton.setInteractive();
 
         this.playButton.on('pointerdown', function(pointer) {

@@ -118,10 +118,15 @@ export default class PreloaderScene extends Phaser.Scene {
         
         //load GUI images
         this.load.image("logo", "assets/images/logo.png");
+        this.load.image("logo_vertical", "assets/images/logo_vertical.png");
         this.load.image("instructions", "assets/images/instructions.png");
+        this.load.image("instructions_vertical", "assets/images/instructions_vertical.png");
         this.load.image("go", "assets/images/gobutton.png");
+        this.load.image("go_vertical", "assets/images/gobutton_vertical.png");
         this.load.image("win", "assets/images/win.png");
+        this.load.image("win_vertical", "assets/images/win_vertical.png");
         this.load.image("restart", "assets/images/restartbutton.png");
+        this.load.image("restart_vertical", "assets/images/restartbutton_vertical.png");
     }
 
     ready() {

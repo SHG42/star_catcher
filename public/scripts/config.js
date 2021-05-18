@@ -1,11 +1,13 @@
 export default {
     type: Phaser.AUTO,
-    parent: "phaser-example",
     backgroundColor: '#007396',
-    width: window.innerWidth,
-    height: window.innerHeight,
-    pixelArt: true,
-    roundPixels: true,
+    scale: {
+        parent: "phaser-example",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        mode: Phaser.Scale.ENVELOP,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         arcade: {

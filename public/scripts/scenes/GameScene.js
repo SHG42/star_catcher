@@ -8,12 +8,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     init(data) {
-        console.log(data);
         //store data in properties:
         this._LEVEL = data.level;
         this._LEVELS = data.levels;
         this._NEWGAME = data.newGame;
-        //console.log(this._LEVELS);
         this.loadingLevel = false;
         //emit event to reset game if game over occurs and new game starts, check to see if new game
         if(this._NEWGAME) {
@@ -50,6 +48,8 @@ export default class GameScene extends Phaser.Scene {
 
         //create collisions
         this.setCollisions();
+
+        this.cameras.main.setZoom(2);
     }
 
     update() {
@@ -66,8 +66,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createMap() {
-        console.log(this._LEVELS);
-        console.log(this._LEVEL);
         this.map = this.make.tilemap({ key: this._LEVELS[this._LEVEL] }); //access level data array then access current level
 
         //tell tilemap to use tilesheet
@@ -107,7 +105,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createDude() {
-        if (this._NEWGAME && this._LEVEL === 1) {
+        if (this._NEWGAME || this._LEVEL === 1) {
             this.map.findObject('entry', (obj) =>{
                 if (obj.type === 'point') {
                     this.dude = new Dude(this, obj.x, obj.y, 4);
@@ -189,8 +187,9 @@ export default class GameScene extends Phaser.Scene {
         //establish camera follow
         this.cameras.main.startFollow(this.dude);
 
+        console.log(this.cameras.main);
+
         //add player-platform collisions
-		// this.dude.setCollideWorldBounds(true);
         this.physics.add.collider(this.dude, this.platformLayer);
         
         this.physics.add.overlap(this.dude, this.portal, this.loadNextLevel.bind(this, false)); //binding context AND a value of false for the newGame parameter, so Phaser knows we're moving to next level and NOT ending or restarting game
