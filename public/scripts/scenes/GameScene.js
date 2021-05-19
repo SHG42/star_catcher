@@ -47,9 +47,7 @@ export default class GameScene extends Phaser.Scene {
         this.createPrize();
 
         //create collisions
-        this.setCollisions();
-
-        this.cameras.main.setZoom(2);
+        this.setWorld();
     }
 
     update() {
@@ -57,7 +55,7 @@ export default class GameScene extends Phaser.Scene {
         this.dude.update(this.cursors);
 
         //restart lvl if dude falls off map
-        if (this.dude.body.position.y > this.map.heightInPixels) {
+        if (this.dude.body.position.y > this.map.heightInPixels+200) {
             this.cameras.main.fade(400, 0, 0, 0);
             this.cameras.main.on('camerafadeoutcomplete', ()=>{
                 this.scene.restart({level: this._LEVEL, levels: this._LEVELS, newGame: false});
@@ -179,7 +177,7 @@ export default class GameScene extends Phaser.Scene {
         });
     }
 
-    setCollisions() {
+    setWorld() {
         //set world bounds to follow camera bounds
 		this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         //establish camera
@@ -187,7 +185,9 @@ export default class GameScene extends Phaser.Scene {
         //establish camera follow
         this.cameras.main.startFollow(this.dude);
 
-        console.log(this.cameras.main);
+        if(this.cameras.main.width < this.cameras.main.height) {
+            this.cameras.main.setZoom(2);
+        }
 
         //add player-platform collisions
         this.physics.add.collider(this.dude, this.platformLayer);
