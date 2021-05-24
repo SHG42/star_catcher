@@ -27,6 +27,7 @@ export default class GameScene extends Phaser.Scene {
 
         //add cursor keys input: for player movement
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.pointer = this.input.activePointer;
 
         //call createMap method
         this.createMap();
@@ -52,7 +53,11 @@ export default class GameScene extends Phaser.Scene {
 
     update() {
         //call cursor key checks from player class, pass cursor keys to player class update
-        this.dude.update(this.cursors);
+        this.dude.update(this.cursors, this.pointer);
+
+        if(this.pointer.isDown){
+            console.log(this.input);
+        }
 
         //restart lvl if dude falls off map
         if (this.dude.body.position.y > this.map.heightInPixels+200) {

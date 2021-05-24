@@ -11,5 +11,8 @@ export default {
             gravity: {y: 800},
             debug: false
         }
+    },
+    input: {
+        activePointers: 2
     }
 }
