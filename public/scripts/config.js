@@ -1,8 +1,8 @@
 export default {
     type: Phaser.AUTO,
-    parent: "phaser-example",
-    width: window.innerWidth,
-    height: window.innerHeight,
+    parent: "phaser-container",
+    width: window.screen.availWidth,
+    height: window.screen.availHeight,
     backgroundColor: '#007396',
     pixelArt: true,
     physics: {
